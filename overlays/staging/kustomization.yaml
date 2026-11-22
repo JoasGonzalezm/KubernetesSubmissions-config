@@ -1,0 +1,21 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: staging
+resources:
+  - ../../base
+patches:
+  # In staging the broadcaster only logs the messages
+  - path: broadcaster.yaml
+images:
+  - name: PROJECT/TODO_APP
+    newName: ghcr.io/joasgonzalezm/todo-app
+    newTag: "4.9"
+  - name: PROJECT/TODO_BACKEND
+    newName: ghcr.io/joasgonzalezm/todo-backend
+    newTag: "4.9"
+  - name: PROJECT/TODO_CRONJOB
+    newName: ghcr.io/joasgonzalezm/todo-cronjob
+    newTag: "4.9"
+  - name: PROJECT/BROADCASTER
+    newName: ghcr.io/joasgonzalezm/broadcaster
+    newTag: "4.9"

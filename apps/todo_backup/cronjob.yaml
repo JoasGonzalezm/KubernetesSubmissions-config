@@ -1,0 +1,50 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  namespace: project
+  name: todo-db-backup
+spec:
+  schedule: "0 3 * * *"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      template:
+        spec:
+          restartPolicy: OnFailure
+          volumes:
+            - name: storage-sa-key
+              secret:
+                secretName: storage-sa-key
+          containers:
+            - name: backup
+              image: PROJECT/TODO_BACKUP
+              resources:
+                requests:
+                  cpu: "50m"
+                  memory: 128Mi
+                limits:
+                  cpu: "500m"
+                  memory: 256Mi
+              envFrom:
+                - configMapRef:
+                    name: todo-backend-config
+              env:
+                - name: BACKUP_BUCKET
+                  value: dwk-todo-backups
+                - name: GOOGLE_APPLICATION_CREDENTIALS
+                  value: /secrets/key.json
+                - name: PGUSER
+                  valueFrom:
+                    secretKeyRef:
+                      name: todo-db-secret
+                      key: POSTGRES_USER
+                - name: PGPASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: todo-db-secret
+                      key: POSTGRES_PASSWORD
+              volumeMounts:
+                - name: storage-sa-key
+                  mountPath: /secrets
+                  readOnly: true

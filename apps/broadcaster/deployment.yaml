@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: project
+  name: broadcaster-dep
+spec:
+  replicas: 6
+  selector:
+    matchLabels:
+      app: broadcaster
+  template:
+    metadata:
+      labels:
+        app: broadcaster
+    spec:
+      containers:
+        - name: broadcaster
+          image: PROJECT/BROADCASTER
+          resources:
+            requests:
+              cpu: "5m"
+              memory: 32Mi
+            limits:
+              cpu: "100m"
+              memory: 96Mi
+          env:
+            - name: NATS_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: todo-backend-config
+                  key: NATS_URL
+            # Without the secret the broadcaster only logs the messages
+            - name: WEBHOOK_URL
+              valueFrom:
+                secretKeyRef:
+                  name: broadcaster-secret
+                  key: WEBHOOK_URL
+                  optional: true
