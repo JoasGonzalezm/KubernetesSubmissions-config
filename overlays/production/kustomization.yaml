@@ -8,16 +8,16 @@ resources:
 images:
 - name: PROJECT/BROADCASTER
   newName: ghcr.io/joasgonzalezm/broadcaster
-  newTag: "5.6"
+  newTag: "5.7"
 - name: PROJECT/TODO_APP
   newName: ghcr.io/joasgonzalezm/todo-app
-  newTag: "5.6"
+  newTag: "5.7"
 - name: PROJECT/TODO_BACKEND
   newName: ghcr.io/joasgonzalezm/todo-backend
-  newTag: "5.6"
+  newTag: "5.7"
 - name: PROJECT/TODO_BACKUP
   newName: ghcr.io/joasgonzalezm/todo-backup
-  newTag: "5.6"
+  newTag: "5.7"
 - name: PROJECT/TODO_CRONJOB
   newName: ghcr.io/joasgonzalezm/todo-cronjob
-  newTag: "5.6"
+  newTag: "5.7"
